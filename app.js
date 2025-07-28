@@ -798,6 +798,8 @@ function showNotification(message, type = 'info') {
         }, 300);
     });
 }
+const settingsBtn = document.getElementById('settings');
+if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
 
 // Initialize timer display
 updateTimerDisplay();
