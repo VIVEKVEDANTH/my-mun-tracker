@@ -281,5 +281,27 @@
     </div>
 
     <script src="app.js"></script>
+    <div id="settings-modal" class="modal hidden" style="position:fixed; left:0; top:0; width:100vw; height:100vh; background:#0006; z-index:100; display:flex; align-items:center; justify-content:center;">
+  <div class="card" style="min-width:340px;">
+    <h3>Edit Committee Settings</h3>
+    <label>
+      Committee Name:
+      <input type="text" id="settings-committee-name" class="input" />
+    </label>
+    <label>
+      Today's Date:
+      <input type="date" id="settings-date" class="input" />
+    </label>
+    <label>
+      Time:
+      <input type="time" id="settings-time" class="input" />
+    </label>
+    <div style="margin-top:1em;">
+      <button class="btn-primary" onclick="saveSettings()">Save</button>
+      <button class="btn-primary" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
