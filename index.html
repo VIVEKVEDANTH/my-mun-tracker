@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUN Committee Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="committee-title">🏛️ MUN Committee Tracker</h1>
+                    <p class="session-info">United Nations Security Council - Emergency Session on Global Climate Security</p>
+                </div>
+                <div class="header-right">
+                    <div class="datetime">
+                        <span class="date">March 15, 2024</span>
+                        <span class="time" id="current-time">09:00 AM</span>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn--sm btn--secondary" id="save-session">💾 Save Session</button>
+                        <button class="btn btn--sm btn--outline" id="export-data">📊 Export Data</button>
+                        <button class="btn btn--sm btn--outline" id="settings">⚙️ Settings</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Overview Cards -->
+        <section class="overview">
+            <div class="container">
+                <div class="overview-grid">
+                    <div class="overview-card card-delegates">
+                        <div class="card-icon">👥</div>
+                        <div class="card-content">
+                            <h3>Total Delegates</h3>
+                            <span class="card-number">20</span>
+                        </div>
+                    </div>
+                    <div class="overview-card card-speakers">
+                        <div class="card-icon">🎤</div>
+                        <div class="card-content">
+                            <h3>Active Speakers</h3>
+                            <span class="card-number">3</span>
+                        </div>
+                    </div>
+                    <div class="overview-card card-resolutions">
+                        <div class="card-icon">📋</div>
+                        <div class="card-content">
+                            <h3>Resolutions Passed</h3>
+                            <span class="card-number">2</span>
+                        </div>
+                    </div>
+                    <div class="overview-card card-duration">
+                        <div class="card-icon">⏱️</div>
+                        <div class="card-content">
+                            <h3>Session Duration</h3>
+                            <span class="card-number">8h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <div class="container">
+                <div class="tab-list">
+                    <button class="tab-btn active" data-tab="delegates">👥 Delegates</button>
+                    <button class="tab-btn" data-tab="countries">🌍 Countries</button>
+                    <button class="tab-btn" data-tab="live-session">🎙️ Live Session</button>
+                    <button class="tab-btn" data-tab="analytics">📊 Analytics</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Delegates Section -->
+                <section id="delegates-section" class="content-section active">
+                    <div class="section-header">
+                        <h2>📋 Delegate Management</h2>
+                        <div class="section-actions">
+                            <input type="text" class="form-control search-input" placeholder="🔍 Search delegates..." id="delegate-search">
+                            <button class="btn btn--primary" id="add-delegate">➕ Add Delegate</button>
+                        </div>
+                    </div>
+                    
+                    <div class="delegates-grid" id="delegates-grid">
+                        <!-- Delegate cards will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Countries Section -->
+                <section id="countries-section" class="content-section">
+                    <div class="section-header">
+                        <h2>🌍 Country Information</h2>
+                        <div class="section-actions">
+                            <input type="text" class="form-control search-input" placeholder="🔍 Search countries..." id="country-search">
+                            <select class="form-control filter-select">
+                                <option value="">All Awards</option>
+                                <option value="best">Best Delegate</option>
+                                <option value="outstanding">Outstanding</option>
+                                <option value="honorable">Honorable Mention</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="countries-list" id="countries-list">
+                        <!-- Country cards will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Live Session Section -->
+                <section id="live-session-section" class="content-section">
+                    <div class="section-header">
+                        <h2>🎙️ Live Session Management</h2>
+                    </div>
+                    
+                    <div class="live-session-grid">
+                        <div class="current-speaker-card card">
+                            <div class="card__body">
+                                <h3>🎤 Current Speaker</h3>
+                                <div class="speaker-info">
+                                    <span class="speaker-name">Priya Sharma (India) 🇮🇳</span>
+                                    <div class="timer-display">
+                                        <span class="timer" id="speech-timer">02:30</span>
+                                        <div class="timer-controls">
+                                            <button class="btn btn--sm btn--primary" id="start-timer">▶️</button>
+                                            <button class="btn btn--sm btn--secondary" id="pause-timer">⏸️</button>
+                                            <button class="btn btn--sm btn--outline" id="reset-timer">🔄</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="speaker-queue-card card">
+                            <div class="card__body">
+                                <h3>📋 Speaker Queue</h3>
+                                <div class="speaker-queue" id="speaker-queue">
+                                    <div class="queue-item">Sarah Johnson (USA) 🇺🇸</div>
+                                    <div class="queue-item">Li Wei (China) 🇨🇳</div>
+                                    <div class="queue-item">Hans Mueller (Germany) 🇩🇪</div>
+                                </div>
+                                <button class="btn btn--sm btn--outline" id="add-to-queue">➕ Add to Queue</button>
+                            </div>
+                        </div>
+
+                        <div class="motions-card card">
+                            <div class="card__body">
+                                <h3>📝 Active Motions</h3>
+                                <div class="motions-list">
+                                    <div class="motion-item">
+                                        <span>Motion to extend debate time</span>
+                                        <div class="motion-actions">
+                                            <button class="btn btn--sm btn--primary">✅ Vote</button>
+                                        </div>
+                                    </div>
+                                    <div class="motion-item">
+                                        <span>Motion for moderated caucus</span>
+                                        <div class="motion-actions">
+                                            <button class="btn btn--sm btn--primary">✅ Vote</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn--sm btn--outline" id="add-motion">➕ Add Motion</button>
+                            </div>
+                        </div>
+
+                        <div class="voting-results-card card">
+                            <div class="card__body">
+                                <h3>🗳️ Recent Voting Results</h3>
+                                <div class="voting-results">
+                                    <div class="vote-result">
+                                        <h4>Climate Security Framework</h4>
+                                        <div class="vote-stats">
+                                            <span class="vote-for">✅ 15</span>
+                                            <span class="vote-against">❌ 2</span>
+                                            <span class="vote-abstain">➖ 3</span>
+                                        </div>
+                                        <span class="vote-status status status--success">PASSED</span>
+                                    </div>
+                                    <div class="vote-result">
+                                        <h4>Climate Finance Mechanism</h4>
+                                        <div class="vote-stats">
+                                            <span class="vote-for">✅ 18</span>
+                                            <span class="vote-against">❌ 1</span>
+                                            <span class="vote-abstain">➖ 1</span>
+                                        </div>
+                                        <span class="vote-status status status--success">PASSED</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analytics-section" class="content-section">
+                    <div class="section-header">
+                        <h2>📊 Analytics Dashboard</h2>
+                    </div>
+                    
+                    <div class="analytics-grid">
+                        <div class="chart-card card">
+                            <div class="card__body">
+                                <h3>🎤 Speaking Time Distribution</h3>
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="speaking-time-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card card">
+                            <div class="card__body">
+                                <h3>🌍 Country Participation Levels</h3>
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="participation-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card card">
+                            <div class="card__body">
+                                <h3>🏆 Award Distribution</h3>
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="awards-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card card">
+                            <div class="card__body">
+                                <h3>📋 Motion Success Rate</h3>
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="motions-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Modal for Delegate Details -->
+        <div class="modal hidden" id="delegate-modal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🏛️ Delegate Details</h3>
+                    <button class="modal-close" id="close-delegate-modal">✕</button>
+                </div>
+                <div class="modal-body" id="delegate-modal-body">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Country Details -->
+        <div class="modal hidden" id="country-modal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🌍 Country Details</h3>
+                    <button class="modal-close" id="close-country-modal">✕</button>
+                </div>
+                <div class="modal-body" id="country-modal-body">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
