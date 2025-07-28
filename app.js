@@ -731,6 +731,35 @@ function initializeMotionsChart() {
         }
     });
 }
+// Show settings modal with current values
+function openSettings() {
+    // Fill in current values if already set, else use defaults
+    document.getElementById('settings-committee-name').value =
+        window.committeeName || 'United Nations Security Council';
+    let today = (window.committeeDate || new Date()).toISOString().slice(0,10);
+    document.getElementById('settings-date').value = today;
+    let nowTime = window.committeeTime || (new Date().toTimeString().slice(0,5));
+    document.getElementById('settings-time').value = nowTime;
+    document.getElementById('settings-modal').classList.remove('hidden');
+}
+
+// Hide modal
+function closeModal() {
+    document.getElementById('settings-modal').classList.add('hidden');
+}
+
+// Save settings and update display
+function saveSettings() {
+    window.committeeName = document.getElementById('settings-committee-name').value;
+    window.committeeDate = document.getElementById('settings-date').value;
+    window.committeeTime = document.getElementById('settings-time').value;
+    // Example: update shown committee name, date, time on the page
+    document.getElementById('committee-name-display').textContent = window.committeeName;
+    document.getElementById('committee-date-display').textContent = window.committeeDate;
+    document.getElementById('committee-time-display').textContent = window.committeeTime;
+    closeModal();
+    showNotification('Settings updated!', 'success');
+}
 
 // Toast notification system - Fixed
 function showNotification(message, type = 'info') {
